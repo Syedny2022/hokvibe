@@ -1,6 +1,6 @@
-# 📱 Social Post AI — Open-Source AI Social Media Post Generator SaaS (Free Buffer AI / Jasper Social Alternative)
+# Hokvibe — AI Social Content Engine for Solo Founders
 
-> **Generate platform-native social media posts for LinkedIn, Twitter/X, Instagram, Facebook, Reddit, and LINE in seconds.** A production-ready, self-hostable Next.js SaaS boilerplate with live platform mockups, multi-tone generation, publish intents, and built-in Stripe billing. A free open-source alternative to Buffer AI, Jasper Social, Hootsuite OwlyWriter, Publer, and Copy.ai — powered by the MuAPI AI engine.
+> **Vibe is the Voice.** Hokvibe turns raw ideas into scheduled posts instantly for creators and small brands who need to scale their digital presence without a marketing team. It preserves the production-ready Next.js, Prisma, NextAuth, Stripe, and MuAPI architecture from the source template.
 
 **Tech stack:** Next.js 14 (App Router) · Prisma · PostgreSQL · NextAuth (Google OAuth) · Stripe · Tailwind CSS · MuAPI any-llm
 **Use cases:** Social media managers · Content creators · Marketing agencies · Influencers · Brand managers · Startup growth teams · E-commerce stores · Newsletter writers
@@ -15,15 +15,15 @@
 
 ## 🌐 Try the Live Engine
 
-**Hosted Demo:** [social-post-woad.vercel.app](https://social-post-woad.vercel.app/)
+**Production target:** [hokvibe.com](https://hokvibe.com/)
 
 Experience the full glassmorphic, responsive interface. Sign in with Google to explore the Studio, customize dropdowns (Language, Character Length, and Tones), and preview mock social feeds directly from your browser.
 
 ---
 
-AI Social Post Generator is not just another wrapper — it's a production-ready, highly-optimized AI web application. Out of the box, it seamlessly manages User Authentication, Credits & Billing, Creations Persistence, and asynchronous AI generation polling using a sleek Next.js (App Router) architecture. It empowers you to build professional-grade AI workflows with built-in mobile optimization, making it the perfect starting point for your next AI SaaS.
+Hokvibe is not a generic content page. It is a production-ready AI web application that manages user authentication, credits, billing, creation persistence, and asynchronous MuAPI generation polling using a Next.js App Router architecture.
 
-**Why use AI Social Post Generator?**
+**Why use Hokvibe?**
 
 - **Production-Ready SaaS** — Complete with Google OAuth and Stripe Checkout workflows built-in.
 - **Studio Control Center** — Customize dropdowns for platform type, tone of voice, language translation, and character constraints.
@@ -31,7 +31,7 @@ AI Social Post Generator is not just another wrapper — it's a production-ready
 - **Real Publishing Intents** — Seamlessly launch composer windows pre-filled with your generated post copy with one click.
 - **Responsive UX** — Dynamic sliding dropdowns, micro-animations, and complete mobile-stacked responsiveness.
 
-![AI Social Post Generator Dashboard UI](https://cdn.muapi.ai/data/2/549775676598/Screenshot_2026-05-26_181917.png)
+![Hokvibe Dashboard UI](https://cdn.muapi.ai/data/2/549775676598/Screenshot_2026-05-26_181917.png)
 
 ## ✨ Core Features
 
@@ -41,7 +41,7 @@ AI Social Post Generator is not just another wrapper — it's a production-ready
   - **LinkedIn**: Profile headers, like counts, and professional corporate styling.
   - **Twitter / X**: X-premium checkmark badges, sleek black themes, tweet formatting, and 280-character limit alerts.
   - **Instagram**: Styled visual placeholder frame banner, caption layouts, and heart counts.
-  - **Reddit**: Standard dark r/socialpost community headers, author tags, upvote/downvote arrows, and markdown titles.
+  - **Reddit**: Standard dark r/hokvibe community headers, author tags, upvote/downvote arrows, and markdown titles.
   - **LINE**: Broadcasting chat bubble framework with official brand icons and chat timestamps.
 - **Publishing Intent Gateway** — Segmented choice for **Manual Copy** (to clipboard) vs. **Direct Publish** (launches mock OAuth connection stepper steps and pre-populates X/LINE/Reddit compose editors).
 - **History Archive** — A persistent gallery with complete modal detail views, copies, and updates.
@@ -51,11 +51,11 @@ AI Social Post Generator is not just another wrapper — it's a production-ready
 
 ## ⚡ Deployment: Vercel & Production
 
-Deploying an instance of AI Social Post Generator to the web requires minimal configuration. The architecture is engineered explicitly for **Vercel** serverless environments.
+Deploying Hokvibe to the web requires minimal configuration. The architecture is engineered explicitly for **Vercel** serverless environments.
 
 ### One-Click Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SamurAIGPT/social-post)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Syedny2022/hokvibe)
 
 > **Pro Tip:** Fork this repository, replace `YOUR_GITHUB_USER` in the link above, to streamline deployments for your private forks.
 
@@ -68,7 +68,7 @@ To successfully deploy and run, you must populate the following environment vari
 | **Database**          | `DATABASE_URL`                       | PostgreSQL connection string ([Supabase](https://supabase.com) shared pool with pgbouncer)  |
 |                       | `DIRECT_URL`                         | Direct DB connection for Prisma migrations and pushes                                        |
 | **NextAuth / Google** | `NEXTAUTH_SECRET`                    | Secure random string generated via `openssl rand -base64 32`                                 |
-|                       | `NEXTAUTH_URL`                       | Your production domain (e.g. `https://social-post-woad.vercel.app`)                          |
+|                       | `NEXTAUTH_URL`                       | Your production domain (e.g. `https://hokvibe.com`)                                          |
 |                       | `GOOGLE_CLIENT_ID`                   | Get from [Google Cloud Console](https://console.cloud.google.com/apis/credentials)           |
 |                       | `GOOGLE_CLIENT_SECRET`               | Get from [Google Cloud Console](https://console.cloud.google.com/apis/credentials)           |
 | **Stripe Billing**    | `STRIPE_SECRET_KEY`                  | Get from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)                            |
@@ -85,8 +85,8 @@ To successfully deploy and run, you must populate the following environment vari
 4. **Deploy**: Hit "Deploy". Vercel will automatically run the build steps (`npm run build`).
 5. **Database Push**: Since Prisma does not automatically migrate via Vercel builds by default, you may want to append `npx prisma db push && ` to your Vercel build command, or manually run it locally pointing to your production database URL.
 6. **Integrations Setup**:
-   - Establish a **Google Cloud OAuth app**, enabling the callback URL: `https://social-post-woad.vercel.app/api/auth/callback/google`
-   - Setup a **Stripe Webhook**, pointing to `https://social-post-woad.vercel.app/api/stripe/webhook` and selecting the `checkout.session.completed` event to grab your webhook signing secret.
+   - Establish a **Google Cloud OAuth app**, enabling the callback URL: `https://hokvibe.com/api/auth/callback/google`
+   - Setup a **Stripe Webhook**, pointing to `https://hokvibe.com/api/stripe/webhook` and selecting the `checkout.session.completed` event to grab your webhook signing secret.
 
 ---
 
@@ -103,8 +103,8 @@ Ready to iterate locally? Setup is straightforward.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/SamurAIGPT/social-post
-cd social-post
+git clone https://github.com/Syedny2022/hokvibe
+cd hokvibe
 
 # 2. Install dependencies
 npm install
@@ -142,7 +142,7 @@ The graphical console should now be heavily responsive on `http://localhost:3000
 This application decouples visually rich UI elements from core business logic layers, emphasizing modularization.
 
 ```
-social-post/
+hokvibe/
 ├── prisma/
 │   └── schema.prisma           # Postgres tables: Users, Accounts, Creations
 ├── src/
@@ -177,4 +177,4 @@ MIT Licensed.
 
 ---
 
-_AI Social Post Generator: A modular, mobile-ready, production-grade AI web application engine built for creators and builders._
+_Hokvibe: a modular, mobile-ready AI social content engine built for solo founders._

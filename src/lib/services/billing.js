@@ -1,4 +1,4 @@
-import { stripe } from "../stripe";
+import { getStripe } from "../stripe";
 import config from "../config";
 import { UserService } from "./user";
 
@@ -6,6 +6,7 @@ export const BillingService = {
   async createCheckoutSession(userId, planId) {
     const plan = config.stripe.plans[planId];
     if (!plan) throw new Error("Invalid plan selected");
+    const stripe = getStripe();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -32,6 +33,7 @@ export const BillingService = {
   },
 
   async handleWebhook(body, signature) {
+    const stripe = getStripe();
     const event = stripe.webhooks.constructEvent(body, signature, config.stripe.webhookSecret);
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;

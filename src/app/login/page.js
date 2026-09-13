@@ -64,7 +64,7 @@ function LoginContent() {
           <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-2xl text-primary font-black shadow-md shadow-primary/15">
             📱
           </div>
-          <h2 className="text-2xl font-black uppercase tracking-tight">Sign In to Social Post AI</h2>
+          <h2 className="text-2xl font-black uppercase tracking-tight">Sign In to Hokvibe</h2>
           <p className="text-xs font-semibold text-secondary-text leading-relaxed px-2">
             Choose your preferred sign-in method: Google Account or custom MuAPI Key.
           </p>

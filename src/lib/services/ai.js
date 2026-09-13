@@ -19,7 +19,7 @@ export const AIService = {
 
     const apiKey = isUsingCustomKey ? customApiKey.trim() : config.ai.apiKey;
     if (!apiKey || apiKey.includes("your_") || apiKey.trim() === "") {
-      console.warn("MU_API_KEY is not configured or invalid. Falling back to local Mock Social Post Generation.");
+      console.warn("MU_API_KEY is not configured or invalid. Falling back to local Hokvibe mock generation.");
       // Create mock post directly
       const request_id = `mock_${Date.now()}`;
       const creation = await prisma.socialPostCreation.create({
@@ -125,7 +125,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
 
       return creation;
     } catch (err) {
-      console.warn("AI generation API failed. Falling back to local Mock Social Post Generation. Error:", err.message);
+      console.warn("AI generation API failed. Falling back to local Hokvibe mock generation. Error:", err.message);
       // Create mock creation directly as fallback
       const request_id = `mock_fallback_${Date.now()}`;
       const creation = await prisma.socialPostCreation.create({
@@ -193,14 +193,14 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
       } else if (platform === "Twitter / X") {
         headline = `Hot take on ${topic}`;
         postText = `${withTitle ? `🔥 **${headline}**\n` : ""}Most teams struggle with ${topic} because they prioritize planning over direct execution. ${emojis ? "⚡\n\n" : "\n\n"}Real growth happens when you launch, collect real data, and adapt in real-time. Stop waiting for perfect alignment.\n\nDo you agree? Let's discuss. ${emojis ? "👇" : ""}`;
-        suggestedHashtags = ["execution", "buildinpublic", "socialpost"];
+        suggestedHashtags = ["execution", "buildinpublic", "hokvibe"];
       } else if (platform === "Reddit") {
         headline = `How we solved the problem of ${topic} - In-depth breakdown`;
         postText = `${withTitle ? `# ${headline}\n\n` : ""}For a long time, we tried handling ${topic} using standard commercial approaches. Most templates failed completely. Here is the exact, unedited breakdown of how we achieved success:\n\n### 1. The Strategy Shift\nInstead of broad campaigns, we targeted high-intent niches directly.\n\n### 2. Operational Speed\nReducing feedback loops from weeks to hours allowed us to adapt on the fly.\n\nLet me know your thoughts or what struggles you have in this area. AMA!`;
         suggestedHashtags = ["scaling", "growthops", "entrepreneurship", "businessguide"];
       } else if (platform === "Line") {
         headline = `Broadcast: ${topic}`;
-        postText = `${withTitle ? `⭐ **${headline}** ⭐\n\n` : ""}${emojis ? "📢 " : ""}${greet} Exciting updates regarding ${topic}!\n\nWe just released our latest operational blueprint. Here is what you need to know:\n\n• High-Impact leverage\n• Rapid iteration cycles\n• Real-time data adjustments\n\n${emojis ? "📲 " : ""}Read full breakdown here: line.me/R/ti/p/socialpost`;
+        postText = `${withTitle ? `⭐ **${headline}** ⭐\n\n` : ""}${emojis ? "📢 " : ""}${greet} Exciting updates regarding ${topic}!\n\nWe just released our latest operational blueprint. Here is what you need to know:\n\n• High-Impact leverage\n• Rapid iteration cycles\n• Real-time data adjustments\n\n${emojis ? "📲 " : ""}Read full breakdown here: hokvibe.com`;
         suggestedHashtags = ["linebroadcast", "updates", "rapidgrowth"];
       } else if (platform === "Instagram") {
         headline = `The Magic Behind ${topic}`;
@@ -288,7 +288,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
           console.warn("Failed to parse AI output as JSON, fallback to standard text wrapping:", e);
           parsed = {
             postText: textResult,
-            headline: creation.includeTitle ? "AI Social Post" : "",
+            headline: creation.includeTitle ? "Hokvibe Draft" : "",
             suggestedHashtags: [],
           };
         }

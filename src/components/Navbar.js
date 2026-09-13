@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { FiMoon, FiSun, FiLogOut, FiDollarSign, FiPlus, FiUser, FiKey, FiCheck, FiX, FiTrash2 } from "react-icons/fi";
-import { SiVercel } from "react-icons/si";
 import config from "@/lib/config";
 import toast from "react-hot-toast";
 
@@ -35,14 +34,14 @@ export default function Navbar() {
 
   const navLinks = currentAppId
     ? [
-        { name: "Workspace", path: `/app/${currentAppId}` },
-        { name: "Gallery", path: `/app/${currentAppId}/gallery` },
+        { name: "Studio", path: `/app/${currentAppId}` },
         { name: "Pricing", path: `/app/${currentAppId}/pricing` },
+        { name: "Gallery", path: `/app/${currentAppId}/gallery` },
       ]
     : [
-        { name: "Workspace", path: "/" },
-        { name: "Gallery", path: "/gallery" },
+        { name: "Studio", path: "/" },
         { name: "Pricing", path: "/pricing" },
+        { name: "Gallery", path: "/gallery" },
       ];
 
   const handleSaveApiKey = async (e) => {
@@ -143,16 +142,12 @@ export default function Navbar() {
         {/* Desktop Actions Section */}
         <div className="hidden md:flex items-center gap-3">
           
-          {/* Vercel Deploy Button */}
-          <a
-            href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSamurAIGPT%2Fcommon-saas-template"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/"
             className="flex items-center gap-2 rounded-full border border-divider px-4 py-1.5 text-xs font-bold text-secondary-text hover:text-primary-text hover:bg-bg-card transition-colors shadow-sm"
           >
-            <SiVercel className="text-xs text-white" />
-            <span>Deploy</span>
-          </a>
+            <span>Start Creating</span>
+          </Link>
 
           {/* Add/Manage API Key - Directly visible in Navbar */}
           <button
@@ -232,7 +227,7 @@ export default function Navbar() {
               href="/login"
               className="bg-primary text-white px-5 py-1.5 rounded-full text-sm font-bold hover:bg-primary-hover transition-all shadow-md shadow-primary/20"
             >
-              Sign In
+              Start Creating
             </Link>
           )}
         </div>
@@ -289,16 +284,13 @@ export default function Navbar() {
 
             <div className="h-px bg-divider/50 my-2" />
 
-            {/* Vercel Deploy in Mobile menu */}
-            <a
-              href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSamurAIGPT%2Fcommon-saas-template"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/"
+              onClick={() => setIsOpen(false)}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-divider py-3 text-xs font-bold text-secondary-text hover:text-primary-text hover:bg-bg-card transition-all"
             >
-              <SiVercel className="text-xs text-white" />
-              <span>Clone & Deploy Template</span>
-            </a>
+              <span>Start Creating</span>
+            </Link>
 
             {status === "authenticated" ? (
               <button
@@ -317,7 +309,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className="flex w-full items-center justify-center rounded bg-primary text-white py-3 text-sm font-bold hover:bg-primary-hover transition-all shadow-md shadow-primary/20 mt-2"
               >
-                Sign In
+                Start Creating
               </Link>
             )}
           </nav>
@@ -342,7 +334,7 @@ export default function Navbar() {
             </div>
 
             <p className="text-xs text-secondary-text leading-relaxed">
-              Use your own <strong>MuAPI Key</strong> to generate high-converting social posts directly without consuming or purchasing website credits.
+              Use your own <strong>MuAPI Key</strong> to generate social content directly without consuming or purchasing website credits.
             </p>
 
             <form onSubmit={handleSaveApiKey} className="space-y-4">

@@ -256,7 +256,7 @@ export default function WorkspacePage() {
     try {
       return JSON.parse(creation.resultText);
     } catch {
-      return { postText: creation.resultText, headline: "AI Social Post", suggestedHashtags: [] };
+      return { postText: creation.resultText, headline: "Hokvibe Draft", suggestedHashtags: [] };
     }
   };
 
@@ -313,7 +313,7 @@ export default function WorkspacePage() {
     if (!data) return null;
 
     const userAvatar = session?.user?.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200";
-    const userName = session?.user?.name || "AI Copywriter";
+    const userName = session?.user?.name || "Hokvibe Creator";
 
     if (currentCreation.platform === "LinkedIn") {
       return (
@@ -324,7 +324,7 @@ export default function WorkspacePage() {
               <img src={userAvatar} alt="avatar" className="w-10 h-10 rounded-full object-cover border border-zinc-700" />
               <div>
                 <h4 className="font-semibold text-xs text-white hover:text-purple-400 transition-colors cursor-pointer">{userName}</h4>
-                <p className="text-[10px] text-zinc-400">Social Media Expert • 1st</p>
+                <p className="text-[10px] text-zinc-400">Solo Founder • 1st</p>
                 <p className="text-[9px] text-zinc-500">2h • Edited • 🌐</p>
               </div>
             </div>
@@ -440,7 +440,7 @@ export default function WorkspacePage() {
               <FaReddit className="text-xs" />
             </div>
             <div className="min-w-0 flex-1">
-              <span className="font-semibold text-xs text-zinc-100 hover:underline cursor-pointer">r/socialpost</span>
+              <span className="font-semibold text-xs text-zinc-100 hover:underline cursor-pointer">r/hokvibe</span>
               <span className="text-[10px] text-zinc-500 ml-2">Posted by u/copywriter 2h ago</span>
             </div>
           </div>
@@ -567,8 +567,8 @@ export default function WorkspacePage() {
 
     const getPlatformIntentUrl = () => {
       const text = currentParsed?.postText || "";
-      const headline = currentParsed?.headline || "AI Social Post";
-      const shareUrl = "https://socialpost-sites.easysite.ai/generator";
+      const headline = currentParsed?.headline || "Hokvibe Draft";
+      const shareUrl = "https://hokvibe.com";
 
       switch (platform) {
         case "Twitter / X":
@@ -731,6 +731,36 @@ export default function WorkspacePage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col">
+      <section className="w-full border-b border-zinc-800 bg-zinc-950">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <p className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-2">
+            Vibe is the Voice.
+          </p>
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
+            The AI Social Content Engine for Solo Founders.
+          </h1>
+          <h2 className="mt-3 max-w-3xl text-sm sm:text-base font-medium leading-relaxed text-zinc-300">
+            Turn raw ideas into scheduled posts instantly. Built for creators and small brands who need to scale their digital presence without a marketing team.
+          </h2>
+          <div className="mt-4 max-w-3xl rounded-lg border border-zinc-800 bg-zinc-900/70 p-4 text-sm leading-relaxed text-zinc-300">
+            <strong className="text-white">Answer:</strong> Hokvibe converts a rough idea into platform-ready social copy for LinkedIn, X, Instagram, Facebook, Reddit, or Line. Users choose tone, language, and length, then generate structured drafts through MuAPI-backed text generation.
+          </div>
+          <div className="mt-4 grid gap-3 text-xs leading-relaxed text-zinc-400 md:grid-cols-3">
+            <p>
+              Generative Engine Optimization research found that adding cited, verifiable statements can improve visibility for lower-ranked domains by up to 115% in tested answer-engine contexts [1].
+            </p>
+            <p>
+              The same Princeton-led benchmark reports that statistical additions can lift source visibility by 33%, while authoritative quotations can lift visibility by 41% [1].
+            </p>
+            <p>
+              Hokvibe applies that retrieval logic to social drafts: each generation starts from a clear claim, adds useful context, and keeps platform formatting separate from the user&apos;s core idea.
+            </p>
+          </div>
+          <p className="mt-3 text-[10px] text-zinc-600">
+            [1] Aggarwal et al., Generative Engine Optimization, Princeton NLP, 2023.
+          </p>
+        </div>
+      </section>
       <main className="flex-1 flex flex-col md:flex-row md:overflow-hidden overflow-y-auto max-w-7xl w-full mx-auto px-4 py-4 gap-4">
         {/* ─────────────── LEFT CONTROL PANEL ─────────────── */}
         <div className="w-full md:w-[400px] shrink-0 flex flex-col gap-4 md:overflow-y-auto overflow-visible pb-4">
@@ -739,15 +769,15 @@ export default function WorkspacePage() {
           <div className="rounded bg-zinc-900 border border-zinc-800 p-4">
             <h2 className="text-sm font-semibold text-zinc-300 mb-3 flex items-center gap-2">
               <FaMagic className="text-purple-500 text-xs" />
-              Describe Your Post
+              Describe Your Content
             </h2>
             <div className="space-y-3">
               <div>
-                <label className="text-[10px] text-zinc-500 uppercase tracking-wider block mb-1">What is this post about?</label>
+                <label className="text-[10px] text-zinc-500 uppercase tracking-wider block mb-1">What idea should Hokvibe shape?</label>
                 <textarea
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  placeholder="e.g. 3 strategies we used to scale our startup to 10k users in a month using dynamic automation..."
+                  placeholder="e.g. Turn one founder insight into a week of useful posts for LinkedIn and Instagram..."
                   rows={4}
                   className="w-full text-xs bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none"
                 />
@@ -1009,14 +1039,14 @@ export default function WorkspacePage() {
                       ) : (
                         <>
                           <FaMagic className="text-[10px]" />
-                          Generate Social Post
+                          Start Creating
                         </>
                       )}
                     </button>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-xs text-zinc-500 text-center mb-3">Please sign in with Google to generate high-engagement social media posts.</p>
+                    <p className="text-xs text-zinc-500 text-center mb-3">Please sign in with Google to create structured social content.</p>
                     <button
                       onClick={() => signIn("google")}
                       className="w-full py-2.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-zinc-700 cursor-pointer"
@@ -1041,7 +1071,7 @@ export default function WorkspacePage() {
                 {/* Preview Header */}
                 <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-950 flex items-center justify-between shrink-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-zinc-300">Social Media Live Feed Preview</span>
+                    <span className="text-xs font-bold text-zinc-300">Social Feed Preview</span>
                     <StatusBadge status={currentCreation.status} />
                   </div>
                   {currentCreation.status === "completed" && currentParsed && (
@@ -1073,7 +1103,7 @@ export default function WorkspacePage() {
                         <div className="absolute -inset-1 rounded-full border-2 border-purple-500/30 animate-ping" />
                       </div>
                       <div>
-                        <p className="text-sm text-zinc-300 font-semibold">Creating your high-impact social post…</p>
+                        <p className="text-sm text-zinc-300 font-semibold">Creating your Hokvibe draft...</p>
                         <p className="text-[10px] text-zinc-500 mt-1 max-w-xs leading-normal">MuAPI is running predictions using large language models. This takes 5-10 seconds.</p>
                       </div>
                     </div>
@@ -1149,9 +1179,9 @@ export default function WorkspacePage() {
                 <div className="w-16 h-16 rounded-full bg-zinc-800/80 flex items-center justify-center shadow-lg border border-zinc-700/50 mb-4 animate-float">
                   <FaRegClipboard className="text-xl text-purple-500" />
                 </div>
-                <h3 className="text-sm font-semibold text-zinc-300 mb-1">Generate High-Engagement Copies</h3>
+                <h3 className="text-sm font-semibold text-zinc-300 mb-1">Generate Structured Social Drafts</h3>
                 <p className="text-xs text-zinc-500 max-w-sm leading-relaxed mb-6">
-                  Input your topic on the left, choose your platform and tone of voice, and generate optimized social posts in seconds.
+                  Input your idea on the left, choose your platform and tone of voice, and generate copy-ready posts in seconds.
                 </p>
                 <div className="grid grid-cols-2 gap-3 max-w-md w-full">
                   {SOCIAL_PLATFORMS.map((p, i) => (

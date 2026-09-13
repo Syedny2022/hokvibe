@@ -105,7 +105,7 @@ export default function GalleryPage() {
     try {
       return JSON.parse(creation.resultText);
     } catch {
-      return { postText: creation.resultText, headline: "AI Social Post", suggestedHashtags: [] };
+      return { postText: creation.resultText, headline: "Hokvibe Draft", suggestedHashtags: [] };
     }
   };
 
@@ -123,7 +123,7 @@ export default function GalleryPage() {
             <img src={userAvatar} alt="avatar" className="w-8 h-8 rounded-full object-cover border border-zinc-700 shrink-0" />
             <div>
               <h4 className="font-semibold text-white">{userName}</h4>
-              <p className="text-[9px] text-zinc-500">Social Media Expert • 1st</p>
+              <p className="text-[9px] text-zinc-500">Solo Founder • 1st</p>
             </div>
           </div>
           <div className="whitespace-pre-wrap leading-relaxed text-zinc-200 mb-3">
@@ -182,7 +182,7 @@ export default function GalleryPage() {
               <FaReddit className="text-[10px]" />
             </div>
             <div>
-              <span className="font-semibold text-[10px] text-zinc-100 hover:underline cursor-pointer">r/socialpost</span>
+              <span className="font-semibold text-[10px] text-zinc-100 hover:underline cursor-pointer">r/hokvibe</span>
               <span className="text-[9px] text-zinc-500 ml-2">Posted by u/copywriter 2h ago</span>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function GalleryPage() {
           <div>
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <FaImages className="text-purple-500" />
-              Social Post Gallery
+              Hokvibe Gallery
             </h1>
             <p className="text-zinc-500 text-sm mt-1">{creations.length} post{creations.length !== 1 ? "s" : ""} created</p>
           </div>

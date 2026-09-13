@@ -1,13 +1,16 @@
 import Stripe from "stripe";
 import config from "./config";
 
-const apiKey = config.stripe.secretKey && config.stripe.secretKey.trim() !== ""
-  ? config.stripe.secretKey
-  : "sk_test_placeholder_key_for_build_purposes";
+export function getStripe() {
+  const apiKey = config.stripe.secretKey?.trim();
+  if (!apiKey) {
+    throw new Error("STRIPE_SECRET_KEY is required before checkout or webhook handling can run.");
+  }
 
-export const stripe = new Stripe(apiKey, {
-  apiVersion: "2023-10-16",
-});
+  return new Stripe(apiKey, {
+    apiVersion: "2023-10-16",
+  });
+}
 
-export default stripe;
+export default getStripe;
 

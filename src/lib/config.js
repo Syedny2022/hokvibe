@@ -1,5 +1,5 @@
 /**
- * Centralized configuration for the AI Social Post Generator application.
+ * Centralized configuration for the Hokvibe application.
  */
 
 const SOCIAL_PLATFORMS = [
@@ -37,7 +37,7 @@ const LENGTHS = [
 ];
 
 const config = {
-  appName: "Social Post",
+  appName: "Hokvibe",
   auth: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -57,28 +57,28 @@ const config = {
         name: "Basic Pack",
         credits: 1000,
         price: 500,
-        description: "1,000 Credits — generate up to 250 high-engagement posts.",
+        description: "1,000 Credits to turn raw ideas into ready-to-publish posts.",
       },
       standard: {
         id: "standard",
         name: "Standard Pack",
         credits: 2000,
         price: 1000,
-        description: "2,000 Credits — generate up to 500 high-engagement posts.",
+        description: "2,000 Credits for frequent creators and small brands.",
       },
       pro: {
         id: "pro",
         name: "Pro Pack",
         credits: 4000,
         price: 2000,
-        description: "4,000 Credits — generate up to 1,000 high-engagement posts.",
+        description: "4,000 Credits for daily content systems.",
       },
       business: {
         id: "business",
         name: "Business Pack",
         credits: 10000,
         price: 5000,
-        description: "10,000 Credits — generate up to 2,500 high-engagement posts.",
+        description: "10,000 Credits for high-volume social publishing.",
       },
     },
   },
@@ -91,7 +91,7 @@ const config = {
       name: "Any LLM (Text to Text)",
       creditCost: 4, // Charged at 4 credits per post
       endpoint: "https://api.muapi.ai/api/v1/any-llm-models",
-      description: "Generates high-conversion, highly-readable social media copies.",
+      description: "Generates structured social content for solo founders.",
     },
     platforms: SOCIAL_PLATFORMS,
     tones: SOCIAL_TONES,
