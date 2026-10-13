@@ -143,13 +143,13 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           
           <Link
-            href="/"
+            href="/login"
             className="flex items-center gap-2 rounded-full border border-divider px-4 py-1.5 text-xs font-bold text-secondary-text hover:text-primary-text hover:bg-bg-card transition-colors shadow-sm"
           >
             <span>Start Creating</span>
           </Link>
 
-          {/* Add/Manage API Key - Directly visible in Navbar */}
+          {/* MuAPI key access - direct BYOK path */}
           <button
             onClick={() => setIsApiKeyModalOpen(true)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
@@ -159,7 +159,7 @@ export default function Navbar() {
             }`}
           >
             <FiKey className={isApiKeyActive ? "text-amber-400" : "text-secondary-text"} />
-            <span>{isApiKeyActive ? "Custom API Key" : "Add API Key"}</span>
+            <span>{isApiKeyActive ? "MuAPI Key" : "Use MuAPI Key"}</span>
           </button>
 
           {status === "authenticated" ? (
@@ -209,7 +209,7 @@ export default function Navbar() {
                       className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-xs font-semibold text-primary-text hover:bg-primary/10 transition-colors"
                     >
                       <FiKey size={14} className="text-amber-400" />
-                      <span>{isApiKeyActive ? "Manage API Key" : "Add API Key"}</span>
+                      <span>{isApiKeyActive ? "Manage MuAPI Key" : "Use MuAPI Key"}</span>
                     </button>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
@@ -278,14 +278,14 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <FiKey />
-                <span>{isApiKeyActive ? "Manage Custom API Key" : "Add API Key"}</span>
+                <span>{isApiKeyActive ? "Manage MuAPI Key" : "Use MuAPI Key"}</span>
               </div>
             </button>
 
             <div className="h-px bg-divider/50 my-2" />
 
             <Link
-              href="/"
+              href="/login"
               onClick={() => setIsOpen(false)}
               className="flex w-full items-center justify-center gap-2 rounded-full border border-divider py-3 text-xs font-bold text-secondary-text hover:text-primary-text hover:bg-bg-card transition-all"
             >
@@ -378,7 +378,7 @@ export default function Navbar() {
                     className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-950 text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-md shadow-amber-500/20"
                   >
                     <FiCheck />
-                    <span>{savingKey ? "Processing..." : status === "authenticated" ? "Save Key" : "Sign In with API Key"}</span>
+                    <span>{savingKey ? "Processing..." : status === "authenticated" ? "Save Key" : "Sign In with MuAPI Key"}</span>
                   </button>
                 </div>
               </div>
