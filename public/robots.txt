@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hokvibe.com/sitemap.xml

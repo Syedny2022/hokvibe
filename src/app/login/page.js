@@ -95,7 +95,7 @@ function LoginContent() {
             }`}
           >
             <FaKey className="text-amber-400" />
-            <span>Use API Key</span>
+            <span>Use MuAPI Key</span>
           </button>
         </div>
 
@@ -145,7 +145,7 @@ function LoginContent() {
               disabled={isSubmitting || !apiKeyInput.trim()}
               className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-full text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
-              <span>{isSubmitting ? "Authenticating..." : "Sign In with API Key"}</span>
+              <span>{isSubmitting ? "Authenticating..." : "Sign In with MuAPI Key"}</span>
               <FaArrowRight className="text-xs" />
             </button>
 
