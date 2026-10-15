@@ -15,6 +15,12 @@ export const metadata = {
     "Hokvibe turns raw ideas into structured social posts for solo founders, creators, and small brands.",
   keywords:
     "AI social content engine, solo founder content, social post generator, answer engine optimization",
+  verification: {
+    google: "g2vEEcvoKa_Rmp7fjKCJa6NofsdQJmqNiQD7e0siw_c",
+    other: {
+      "msvalidate.01": "19512FA3B41422414D0154AB43D3BA4A",
+    },
+  },
   openGraph: {
     title: "Hokvibe — AI Social Content Engine for Solo Founders",
     description:
