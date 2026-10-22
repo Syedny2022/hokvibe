@@ -3,7 +3,25 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { AIService } from "@/lib/services/ai";
-import config from "@/lib/config";
+
+export async function PATCH(req) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+    const { id, text } = await req.json();
+    if (typeof id !== "string" || typeof text !== "string" || text.length > 50000) return new NextResponse("Invalid draft", { status: 400 });
+    const draft = await prisma.socialPostCreation.findFirst({ where: { id, userId: session.user.id, status: "completed" } });
+    if (!draft) return new NextResponse("Not found", { status: 404 });
+    let result;
+    try { result = JSON.parse(draft.resultText); } catch { result = {}; }
+    const updated = await prisma.socialPostCreation.updateMany({ where: { id, userId: session.user.id, status: "completed" }, data: { resultText: JSON.stringify({ ...result, postText: text }) } });
+    if (!updated.count) return new NextResponse("Not found", { status: 404 });
+    return NextResponse.json({ saved: true });
+  } catch (error) {
+    console.error("[CREATIONS_PATCH_ERROR]", error);
+    return new NextResponse("Could not save draft", { status: 500 });
+  }
+}
 
 // GET — list creations or poll a specific requestId
 export async function GET(req) {
@@ -14,10 +32,11 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const requestId = searchParams.get("requestId");
 
-    const headerApiKey = req.headers.get("x-custom-api-key");
-    const customApiKey = headerApiKey || session.user.customApiKey || null;
+    const customApiKey = null;
 
     if (requestId) {
+      const owned = await prisma.socialPostCreation.findFirst({ where: { requestId, userId: session.user.id }, select: { id: true } });
+      if (!owned) return new NextResponse("Not found", { status: 404 });
       const statusData = await AIService.checkStatus(requestId, customApiKey);
       return NextResponse.json(statusData);
     }
@@ -25,6 +44,7 @@ export async function GET(req) {
     const creations = await prisma.socialPostCreation.findMany({
       where: { userId: session.user.id },
       orderBy: { createdAt: "desc" },
+      include: { publications: { orderBy: { createdAt: "desc" }, select: { platform: true, status: true, postUrl: true, error: true, createdAt: true } } },
     });
 
     // Self-healing: sync any still-processing items on the fly
@@ -66,25 +86,7 @@ export async function POST(req) {
       return new NextResponse("Missing topic description", { status: 400 });
     }
 
-    const headerApiKey = req.headers.get("x-custom-api-key");
-    const customApiKey = headerApiKey || body.customApiKey || session.user.customApiKey || null;
-    const isUsingCustomKey = Boolean(customApiKey && customApiKey.trim().length > 0);
-
-    const cost = isUsingCustomKey ? 0 : config.ai.model.creditCost; // 4 credits
-
-    if (!isUsingCustomKey) {
-      const user = await prisma.user.findUnique({
-        where: { id: session.user.id },
-        select: { credits: true },
-      });
-
-      if (!user || user.credits < cost) {
-        return new NextResponse(
-          `Insufficient credits. Required: ${cost}, balance: ${user?.credits ?? 0}`,
-          { status: 400 }
-        );
-      }
-    }
+    const customApiKey = null;
 
     const creation = await AIService.generateSocialPost(session.user.id, {
       topic,
@@ -101,6 +103,6 @@ export async function POST(req) {
     return NextResponse.json(creation);
   } catch (error) {
     console.error("[CREATIONS_POST_ERROR]", error);
-    return new NextResponse(error.message || "Internal Error", { status: 500 });
+    return new NextResponse("Generation is temporarily unavailable.", { status: 500 });
   }
 }

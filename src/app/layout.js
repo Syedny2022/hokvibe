@@ -10,11 +10,10 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Hokvibe — AI Social Content Engine for Solo Founders",
+  metadataBase: new URL("https://hokvibe.com"),
+  title: { default: "Hokvibe | AI Social Content Studio", template: "%s | Hokvibe" },
   description:
     "Hokvibe turns raw ideas into structured social posts for solo founders, creators, and small brands.",
-  keywords:
-    "AI social content engine, solo founder content, social post generator, answer engine optimization",
   verification: {
     google: "g2vEEcvoKa_Rmp7fjKCJa6NofsdQJmqNiQD7e0siw_c",
     other: {
@@ -22,16 +21,17 @@ export const metadata = {
     },
   },
   openGraph: {
-    title: "Hokvibe — AI Social Content Engine for Solo Founders",
-    description:
-      "Turn raw ideas into scheduled posts instantly.",
+    title: "Hokvibe | AI Social Content Studio",
+    description: "Turn ideas into editable social drafts.",
+    url: "https://hokvibe.com",
+    siteName: "Hokvibe",
     type: "website",
   },
+  twitter: { card: "summary", title: "Hokvibe | AI Social Content Studio", description: "Turn ideas into editable social drafts." },
 };
 
 export default function RootLayout({ children }) {
   const theme = config?.theme || "slate-indigo";
-  const dateModified = new Date().toISOString();
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -40,12 +40,6 @@ export default function RootLayout({ children }) {
         "@id": "https://hokvibe.com/#organization",
         name: "Hokvibe",
         url: "https://hokvibe.com",
-        sameAs: [
-          "https://github.com/Syedny2022/hokvibe",
-          "https://muapi.ai/apps",
-          "https://vercel.com",
-          "https://www.cloudflare.com",
-        ],
       },
       {
         "@type": "SoftwareApplication",
@@ -57,16 +51,6 @@ export default function RootLayout({ children }) {
         description:
           "Hokvibe turns raw ideas into structured social posts for solo founders, creators, and small brands.",
         creator: { "@id": "https://hokvibe.com/#organization" },
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-        dateModified,
-        sameAs: [
-          "https://github.com/Syedny2022/hokvibe",
-          "https://muapi.ai/apps",
-        ],
       },
     ],
   };
@@ -74,10 +58,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full w-full" data-theme={theme}>
       <head>
-        <link
-          rel="icon"
-          href="https://newoaks.s3.us-west-1.amazonaws.com/AutoDev/11407/5272b774-1dec-479f-9b03-bb7eeb892b80.jpg"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

@@ -71,4 +71,20 @@ model SocialPostCreation {
   language     String   @default("English")
   charLength   String   @default("Medium")
   includeTitle Boolean  @default(true)
+  publications SocialPublication[]
+}
+
+model SocialPublication {
+  id         String             @id @default(cuid())
+  requestKey String             @unique
+  creationId String
+  creation   SocialPostCreation @relation(fields: [creationId], references: [id], onDelete: Cascade)
+  platform   String
+  status     String
+  postUrl    String?
+  error      String?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@index([creationId, platform])
 }

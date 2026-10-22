@@ -10,6 +10,7 @@ export default function Footer() {
           &copy; Hokvibe
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4">
+          <Link href="/blog" className="hover:text-primary-text transition-colors">Blog</Link>
           <Link href="/about" className="hover:text-primary-text transition-colors">
             About
           </Link>
@@ -20,10 +21,6 @@ export default function Footer() {
           <span className="opacity-30">•</span>
           <Link href="/faq" className="hover:text-primary-text transition-colors">
             FAQ
-          </Link>
-          <span className="opacity-30">•</span>
-          <Link href="/pricing" className="hover:text-primary-text transition-colors">
-            Pricing
           </Link>
           <span className="opacity-30">•</span>
           <Link href="/privacy" className="hover:text-primary-text transition-colors">

@@ -8,12 +8,8 @@ const faqs = [
     answer: "It is built for solo founders, creators, and small brands that need consistent social content.",
   },
   {
-    question: "How do credits work?",
-    answer: "Credits are used when you generate content, and credit packs are available from the pricing page.",
-  },
-  {
     question: "Which platforms does Hokvibe support?",
-    answer: "Hokvibe formats drafts for LinkedIn, X, Instagram, Facebook, Reddit, and Line.",
+    answer: "Hokvibe formats drafts for LinkedIn, Facebook Pages, Reddit, and X. X is preview-only.",
   },
   {
     question: "How do I sign in?",
@@ -33,7 +29,7 @@ export default function FaqPage() {
             FAQ
           </h1>
           <h2 className="max-w-2xl text-base font-medium leading-relaxed text-secondary-text">
-            Common questions about Hokvibe, credits, supported platforms, and sign-in.
+            Common questions about Hokvibe, supported platforms, and sign-in.
           </h2>
         </div>
 

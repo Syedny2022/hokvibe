@@ -1,16 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { UserService } from "./user";
 import config, { SOCIAL_PLATFORMS, SOCIAL_TONES, LANGUAGES, LENGTHS } from "@/lib/config";
 
 export const AIService = {
   async generateSocialPost(userId, { topic, platformId, toneId, includeEmojis, includeHashtags, language, charLength, includeTitle, customApiKey = null }) {
     const isUsingCustomKey = Boolean(customApiKey && customApiKey.trim().length > 0);
-    const cost = isUsingCustomKey ? 0 : config.ai.model.creditCost; // 4 credits
+    const cost = 0;
     
-    // 1. Deduct credits if not using custom key
-    if (!isUsingCustomKey && cost > 0) {
-      await UserService.deductCredits(userId, cost);
-    }
 
     const platform = SOCIAL_PLATFORMS.find(p => p.id === platformId) || SOCIAL_PLATFORMS[0];
     const tone = SOCIAL_TONES.find(t => t.id === toneId) || SOCIAL_TONES[0];
@@ -19,7 +14,8 @@ export const AIService = {
 
     const apiKey = isUsingCustomKey ? customApiKey.trim() : config.ai.apiKey;
     if (!apiKey || apiKey.includes("your_") || apiKey.trim() === "") {
-      console.warn("MU_API_KEY is not configured or invalid. Falling back to local Hokvibe mock generation.");
+      throw new Error("MU_API_KEY is not configured.");
+      /*
       // Create mock post directly
       const request_id = `mock_${Date.now()}`;
       const creation = await prisma.socialPostCreation.create({
@@ -37,7 +33,7 @@ export const AIService = {
           creditCost: cost,
         }
       });
-      return creation;
+      return creation; */
     }
 
     // 2. Formulate advanced prompt instructing the LLM to return JSON
@@ -84,6 +80,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
         headers: {
           "Content-Type": "application/json",
           "x-api-key": apiKey,
+          "X-External-User-Id": userId,
         },
         body: JSON.stringify({
           prompt: userPrompt,
@@ -125,7 +122,8 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
 
       return creation;
     } catch (err) {
-      console.warn("AI generation API failed. Falling back to local Hokvibe mock generation. Error:", err.message);
+      throw new Error(`Generation failed: ${err.message}`);
+      /*
       // Create mock creation directly as fallback
       const request_id = `mock_fallback_${Date.now()}`;
       const creation = await prisma.socialPostCreation.create({
@@ -143,7 +141,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
           creditCost: cost,
         }
       });
-      return creation;
+      return creation; */
     }
   },
 
@@ -166,6 +164,8 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
 
     // Check if it's a mock request (starts with 'mock_')
     if (requestId && requestId.startsWith("mock_")) {
+      return { status: "failed", error: "This draft was generated in demo mode and cannot be used." };
+      /*
       const elapsed = Date.now() - new Date(creation.createdAt).getTime();
       if (elapsed < 3000) {
         return { status: "processing" };
@@ -225,7 +225,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
         }
       });
 
-      return { status: "completed", creation: updated };
+      return { status: "completed", creation: updated }; */
     }
 
     const apiKey = (customApiKey && customApiKey.trim().length > 0) ? customApiKey.trim() : config.ai.apiKey;
@@ -237,6 +237,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
         headers: {
           "Content-Type": "application/json",
           "x-api-key": apiKey,
+          "X-External-User-Id": creation.userId,
         }
       });
 
@@ -313,9 +314,6 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
         });
 
         // Refund exact credits if not using custom key
-        if (!isUsingCustomKey) {
-          await UserService.addCredits(creation.userId, creation.creditCost);
-        }
         return { status: "failed", error: errorMsg };
       }
     } catch (e) {
