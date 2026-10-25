@@ -16,7 +16,7 @@ export async function POST(request) {
   try {
     const composio = new Composio({ apiKey: process.env.COMPOSIO_API_KEY });
     const session = await composio.create(user.user.id);
-    const connection = await session.authorize(body.platform, { callbackUrl: new URL("/", origin).toString() });
+    const connection = await session.authorize(body.platform, { callbackUrl: new URL("/studio", origin).toString() });
     const url = new URL(connection.redirectUrl);
     if (url.protocol !== "https:") throw new Error("Invalid authorization URL");
     return Response.json({ url: url.toString() }, { headers: { "Cache-Control": "no-store" } });

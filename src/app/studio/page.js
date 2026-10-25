@@ -23,6 +23,7 @@ import {
 } from "react-icons/fa";
 import { SOCIAL_PLATFORMS, SOCIAL_TONES, LANGUAGES, LENGTHS } from "@/lib/config";
 import Publishing from "@/components/Publishing";
+import ConnectionOverview from "@/components/ConnectionOverview";
 
 const PLATFORM_ICONS = {
   FaLinkedin,
@@ -236,11 +237,18 @@ export default function WorkspacePage() {
 
       return res.json();
       }));
-      const creations = results.filter(result => result.status === "fulfilled").map(result => result.value);
+      const creations = results.map((result, index) => result.status === "fulfilled"
+        ? result.value
+        : {
+            id: `failed-${SOCIAL_PLATFORMS[index].id}`,
+            platform: SOCIAL_PLATFORMS[index].name,
+            status: "failed",
+            error: "Generation could not start for this platform.",
+          });
       const failed = results.flatMap((result, index) => result.status === "rejected" ? [SOCIAL_PLATFORMS[index].name] : []);
       setBatch(creations);
       setDraftEdits({});
-      setCurrentCreation(creations[0] || null);
+      setCurrentCreation(creations.find((creation) => creation.status !== "failed") || creations[0] || null);
       if (failed.length) setError(`Could not start: ${failed.join(", ")}. Please try again.`);
       if (!creations.some(creation => creation.status === "processing")) setGenerating(false);
       fetchCreations();
@@ -285,10 +293,14 @@ export default function WorkspacePage() {
     }
   };
 
-  const handleCopy = (text) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setError("Could not copy this draft. Please select the text and copy it manually.");
+    }
   };
 
   const saveDraft = async (id, text) => {
@@ -460,6 +472,7 @@ export default function WorkspacePage() {
               {data.postText}
             </div>
           </div>
+          {session && <ConnectionOverview />}
         </div>
       );
     }
@@ -1021,10 +1034,10 @@ export default function WorkspacePage() {
         <div className="flex-1 flex flex-col gap-4 md:overflow-hidden overflow-visible">
 
           {/* Main Showcase Preview */}
-          {batch.length > 0 && <div role="tablist" aria-label="Generated drafts" className="flex gap-2 overflow-x-auto pb-2">{batch.map(creation => <button key={creation.id} type="button" role="tab" aria-selected={currentCreation?.id === creation.id} onClick={() => setCurrentCreation(creation)} className={`shrink-0 rounded border px-3 py-2 text-xs ${currentCreation?.id === creation.id ? "border-emerald-400 text-emerald-400" : "border-zinc-700 text-zinc-300"}`}>{creation.platform} · {creation.status}</button>)}</div>}
+           {batch.length > 0 && <div role="tablist" aria-label="Generated drafts" className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2" aria-orientation="horizontal">{batch.map(creation => <button key={creation.id} id={`draft-tab-${creation.id}`} type="button" role="tab" aria-selected={currentCreation?.id === creation.id} aria-controls="draft-preview" onClick={() => setCurrentCreation(creation)} className={`shrink-0 rounded border px-3 py-2 text-xs ${currentCreation?.id === creation.id ? "border-emerald-400 bg-emerald-400/10 text-emerald-300" : "border-zinc-700 text-zinc-300"}`}>{creation.platform} · {creation.status}</button>)}</div>}
           <div className="flex-1 rounded bg-zinc-900 border border-zinc-800 overflow-hidden flex flex-col min-h-[400px]">
-            {currentCreation ? (
-              <div className="flex flex-col h-full">
+             {currentCreation ? (
+               <div id="draft-preview" role="tabpanel" aria-labelledby={`draft-tab-${currentCreation.id}`} className="flex flex-col h-full">
                 {/* Preview Header */}
                 <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-950 flex items-center justify-between shrink-0">
                   <div className="flex items-center gap-2">
@@ -1051,9 +1064,11 @@ export default function WorkspacePage() {
                   )}
                 </div>
 
-                {/* Preview Frame */}
-                <div className="flex-1 overflow-y-auto p-8 flex items-center justify-center bg-zinc-950/40">
-                  {generating && currentCreation.status === "processing" ? (
+                 {/* Preview Frame */}
+                 <div className="flex-1 overflow-y-auto p-4 sm:p-8 flex items-center justify-center bg-zinc-950/40">
+                   {currentCreation.status === "failed" ? (
+                     <div className="max-w-md rounded border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200">{currentCreation.error || "Generation failed for this platform. Try generating the batch again."}</div>
+                   ) : generating && currentCreation.status === "processing" ? (
                     <div className="flex flex-col items-center justify-center gap-4 text-center">
                       <div className="relative">
                         <div className="w-12 h-12 rounded-full border-2 border-purple-500/10 border-t-purple-500 animate-spin" />
