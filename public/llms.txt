@@ -1,21 +1,33 @@
 # Hokvibe
 
-> Hokvibe is an AI social content engine for solo founders. It turns raw ideas into platform-ready posts, captions, hooks, and publishing drafts while preserving auth, billing, Prisma, and MuAPI generation architecture from the source template.
+> Hokvibe is a social-content workspace for turning a source idea into editable platform-specific drafts. Customers review every draft before copying it or, where supported, publishing it through a connected account.
 
 ## Core Pages
 
-- [Studio](https://hokvibe.com/) - Generate social posts from a raw idea.
-- [Pricing](https://hokvibe.com/pricing) - Buy content credits using the existing Stripe-ready billing flow.
-- [Gallery](https://hokvibe.com/gallery) - Review and copy generated posts.
+- [Home](https://hokvibe.com/) - Product overview and sign-in entry point.
+- [Studio](https://hokvibe.com/studio) - Generate, edit, copy, and review drafts.
+- [Blog](https://hokvibe.com/blog) - Original guides about content workflows.
+- [FAQ](https://hokvibe.com/faq) - Product questions and answers.
+- [Privacy](https://hokvibe.com/privacy) - Privacy information.
+- [Terms](https://hokvibe.com/terms) - Service terms.
 
 ## Machine-Readable Alternatives
 
 - [Root Markdown](https://hokvibe.com/index.md) - Plain Markdown summary of the Hokvibe value proposition.
 - [Agent Context](https://hokvibe.com/llms.txt) - This file, designed for autonomous readers and retrieval systems.
 
-## Source And Infrastructure
+## Supported Publishing
+
+- LinkedIn, Facebook Pages, and Reddit may be connected through managed authorization when available in the signed-in workspace.
+- X/Twitter, Instagram, and LINE are draft-preview and export formats only.
+- Hokvibe does not automatically publish generated content. Customers review and explicitly approve each publication.
+
+## Current Limitations
+
+- A successful generation or connection badge is not proof that content was published.
+- Billing and transactional email features are enabled only after their production configuration and verification are complete.
+
+## Support And Infrastructure
 
 - [GitHub Repository](https://github.com/Syedny2022/hokvibe)
-- [Muapi App Templates](https://muapi.ai/apps)
-- [Vercel](https://vercel.com)
-- [Cloudflare](https://www.cloudflare.com)
+- [Contact](https://hokvibe.com/contact) - Support contact.

@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "./prisma";
-import { sendWelcomeEmail } from "./services/email";
+import { enqueueWelcomeEmail } from "./email/outbox";
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -13,9 +13,9 @@ export const authOptions = {
   },
   events: {
     async createUser({ user }) {
-      if (!user.email) return;
-      try { await sendWelcomeEmail(user); }
-      catch (error) { console.error("Welcome email failed:", error.message); }
+      if (process.env.EMAIL_OUTBOX_ENABLED !== "true" || !user.email) return;
+      try { await enqueueWelcomeEmail(user); }
+      catch { console.error("Welcome email could not be queued."); }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

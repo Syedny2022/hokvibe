@@ -32,12 +32,10 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const requestId = searchParams.get("requestId");
 
-    const customApiKey = null;
-
     if (requestId) {
       const owned = await prisma.socialPostCreation.findFirst({ where: { requestId, userId: session.user.id }, select: { id: true } });
       if (!owned) return new NextResponse("Not found", { status: 404 });
-      const statusData = await AIService.checkStatus(requestId, customApiKey);
+      const statusData = await AIService.checkStatus(requestId);
       return NextResponse.json(statusData);
     }
 
@@ -52,7 +50,7 @@ export async function GET(req) {
       creations.map(async (c) => {
         if (c.status === "processing" && c.requestId) {
           try {
-            await AIService.checkStatus(c.requestId, customApiKey);
+            await AIService.checkStatus(c.requestId);
             return (
               (await prisma.socialPostCreation.findUnique({
                 where: { id: c.id },
@@ -86,8 +84,6 @@ export async function POST(req) {
       return new NextResponse("Missing topic description", { status: 400 });
     }
 
-    const customApiKey = null;
-
     const creation = await AIService.generateSocialPost(session.user.id, {
       topic,
       platformId,
@@ -97,7 +93,6 @@ export async function POST(req) {
       language: language || "english",
       charLength: charLength || "medium",
       includeTitle: includeTitle !== false,
-      customApiKey,
     });
 
     return NextResponse.json(creation);

@@ -2,8 +2,7 @@ import { prisma } from "@/lib/prisma";
 import config, { SOCIAL_PLATFORMS, SOCIAL_TONES, LANGUAGES, LENGTHS } from "@/lib/config";
 
 export const AIService = {
-  async generateSocialPost(userId, { topic, platformId, toneId, includeEmojis, includeHashtags, language, charLength, includeTitle, customApiKey = null }) {
-    const isUsingCustomKey = Boolean(customApiKey && customApiKey.trim().length > 0);
+  async generateSocialPost(userId, { topic, platformId, toneId, includeEmojis, includeHashtags, language, charLength, includeTitle }) {
     const cost = 0;
     
 
@@ -12,7 +11,7 @@ export const AIService = {
     const langName = LANGUAGES.find(l => l.id === language)?.name || "English";
     const lengthDetails = LENGTHS.find(len => len.id === charLength) || LENGTHS[1];
 
-    const apiKey = isUsingCustomKey ? customApiKey.trim() : config.ai.apiKey;
+    const apiKey = config.ai.apiKey;
     if (!apiKey || apiKey.includes("your_") || apiKey.trim() === "") {
       throw new Error("MU_API_KEY is not configured.");
       /*
@@ -145,7 +144,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
     }
   },
 
-  async checkStatus(requestId, customApiKey = null) {
+  async checkStatus(requestId) {
     const creation = await prisma.socialPostCreation.findUnique({
       where: { requestId }
     });
@@ -159,8 +158,6 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
     if (creation.status === "failed") {
       return { status: "failed", error: creation.error || "Generation failed" };
     }
-
-    const isUsingCustomKey = Boolean(customApiKey && customApiKey.trim().length > 0);
 
     // Check if it's a mock request (starts with 'mock_')
     if (requestId && requestId.startsWith("mock_")) {
@@ -228,7 +225,7 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
       return { status: "completed", creation: updated }; */
     }
 
-    const apiKey = (customApiKey && customApiKey.trim().length > 0) ? customApiKey.trim() : config.ai.apiKey;
+    const apiKey = config.ai.apiKey;
     if (!apiKey) throw new Error("MU_API_KEY is not configured");
 
     try {
@@ -313,7 +310,6 @@ Ensure the copy is highly engaging, reads naturally, and captures the user's foc
           }
         });
 
-        // Refund exact credits if not using custom key
         return { status: "failed", error: errorMsg };
       }
     } catch (e) {

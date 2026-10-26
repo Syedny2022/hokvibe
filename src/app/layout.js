@@ -42,6 +42,13 @@ export default function RootLayout({ children }) {
         url: "https://hokvibe.com",
       },
       {
+        "@type": "WebSite",
+        "@id": "https://hokvibe.com/#website",
+        name: "Hokvibe",
+        url: "https://hokvibe.com",
+        publisher: { "@id": "https://hokvibe.com/#organization" },
+      },
+      {
         "@type": "SoftwareApplication",
         "@id": "https://hokvibe.com/#software",
         name: "Hokvibe",
@@ -51,6 +58,7 @@ export default function RootLayout({ children }) {
         description:
           "Hokvibe turns raw ideas into structured social posts for solo founders, creators, and small brands.",
         creator: { "@id": "https://hokvibe.com/#organization" },
+        mainEntityOfPage: { "@id": "https://hokvibe.com/#website" },
       },
     ],
   };

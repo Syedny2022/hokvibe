@@ -45,9 +45,12 @@ export async function POST(request) {
   } catch {
     return Response.json({ error: "Could not prepare publication. Check your connection and permissions." }, { status: 502 });
   }
+  const destinationRef = platform === "facebook" ? pageId : platform === "reddit" ? `r/${subreddit}` : "self";
   let attempt;
   try {
-    attempt = await prisma.socialPublication.create({ data: { creationId, platform, requestKey, status: "pending" } });
+    attempt = await prisma.socialPublication.create({
+      data: { creationId, platform, requestKey, status: "queued", approvedText: text, destinationRef },
+    });
     let saved;
     try { saved = JSON.parse(creation.resultText || "{}"); } catch { saved = {}; }
     await prisma.socialPostCreation.update({ where: { id: creationId }, data: { resultText: JSON.stringify({ ...saved, postText: text }) } });
@@ -55,6 +58,7 @@ export async function POST(request) {
     return Response.json({ error: "Could not record publication. No post was sent." }, { status: 503 });
   }
   try {
+    await prisma.socialPublication.update({ where: { id: attempt.id }, data: { status: "sending" } });
     const result = await execute(session, slug, params);
     if (Array.isArray(result?.json?.errors) && result.json.errors.length) throw new Error("Platform rejected the post.");
     const candidate = result?.permalink || result?.url || result?.json?.data?.url;
@@ -65,10 +69,18 @@ export async function POST(request) {
       const parsed = new URL(candidate, "https://www.reddit.com");
       if (parsed.protocol === "https:" && ["reddit.com", "www.reddit.com", "linkedin.com", "www.linkedin.com", "facebook.com", "www.facebook.com"].includes(parsed.hostname)) postUrl = parsed.toString();
     }
-    await prisma.socialPublication.update({ where: { id: attempt.id }, data: { status: "published", postUrl } });
+    await prisma.socialPublication.update({
+      where: { id: attempt.id },
+      data: { status: "published", postUrl, providerPostId: typeof postId === "string" ? postId : null },
+    });
     return Response.json({ status: "published", postUrl });
-  } catch {
-    await prisma.socialPublication.update({ where: { id: attempt.id }, data: { status: "unknown", error: "Check the platform before trying again; publication could not be confirmed." } }).catch(() => {});
-    return Response.json({ status: "unknown", error: "Check the platform before trying again; publication could not be confirmed." }, { status: 502 });
+  } catch (error) {
+    const rejected = error instanceof Error && error.message === "The social platform rejected the request.";
+    const status = rejected ? "failed" : "unknown";
+    const message = rejected
+      ? "The platform rejected this post. Review the content and try again."
+      : "Check the platform before trying again; publication could not be confirmed.";
+    await prisma.socialPublication.update({ where: { id: attempt.id }, data: { status, error: message } }).catch(() => {});
+    return Response.json({ status, error: message }, { status: 502 });
   }
 }
