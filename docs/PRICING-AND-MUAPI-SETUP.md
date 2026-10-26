@@ -1,21 +1,31 @@
 # Hokvibe Pricing And MuAPI Setup
 
-**Research date:** 2026-10-25  
+**Research date:** 2026-10-26
 **Scope:** Research and pricing design only. No MuAPI, Vercel, Stripe, database, or application configuration was changed.
 
 ## Decision Summary
 
-Launch Hokvibe's text-only social engine around a **generation pack**: one source input transformed into six platform-specific drafts (LinkedIn, X/Twitter, Facebook, Instagram, Reddit, and LINE). MuAPI's current text route supports this economically at a $0.06 direct-model baseline per six independently generated drafts. Do not include image or video generations in subscription allowances until they have their own priced add-on budget.
+Launch Hokvibe's text-only social engine around a **generation pack**: one source URL or raw note transformed into up to six platform-native text drafts (LinkedIn, X/Twitter, Facebook, Instagram, Reddit, and LINE). This is a deliberately narrow workflow for solo founders, independent makers, and developer-entrepreneurs who value speed, voice preservation, and zero administrative bloat. MuAPI's current text route supports this at a $0.06 direct-model baseline per six independently generated drafts. Do not include image or video generations in subscription allowances until they have their own priced add-on budget.
 
 Recommended launch pricing:
 
-| Plan | Monthly price | Included generation packs | Direct text-model allowance cost | Position |
-| --- | ---: | ---: | ---: | --- |
-| Free | $0 | 10 | $0.60 | Product evaluation only |
-| Solo | $29 | 150 | $9.00 | Active individual builder |
-| Scale | $79 | 500 | $30.00 | Heavy use and multiple brands |
+| Plan | Monthly price | Included generation packs | Up to platform-native drafts | Direct text-model allowance cost | Position |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Free Trial | Free, one time | 5 total | 30 | $0.30 | Test extraction and generation with real source material |
+| Solo Founder | $17/month | 50/month | 300/month | $3.00/month | Regular product updates, changelogs, and consistent content drops |
+| Builder | $27/month | 150/month | 900/month | $9.00/month | High-volume shipping and multi-channel distribution |
 
-The table uses the current $0.01-per-text-generation rate and assumes six separate text calls per pack. At full allowance use, direct model gross margin before payment fees, infrastructure, support, taxes, and abuse is approximately 69% for Solo and 62% for Scale. This is a planning baseline, not a promise that MuAPI pricing will remain unchanged.
+The table uses the current $0.01-per-text-generation rate and assumes six separate text calls per pack. At full allowance use, direct model gross margin before payment fees, infrastructure, support, taxes, and abuse is approximately **82.4%** for Solo Founder and **66.7%** for Builder. This is a planning baseline, not a promise that MuAPI pricing will remain unchanged.
+
+### Maximum-Use Unit Economics
+
+| Plan | Revenue | Maximum packs | Direct MuAPI text cost | Direct-model gross profit | Direct-model gross margin |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Free Trial | $0.00 | 5 total | $0.30 | -$0.30 | N/A acquisition cost |
+| Solo Founder | $17.00 | 50/month | $3.00 | $14.00 | 82.4% |
+| Builder | $27.00 | 150/month | $9.00 | $18.00 | 66.7% |
+
+Calculations: `packs x 6 drafts x $0.01` gives the direct MuAPI cost; `(revenue - direct MuAPI cost) / revenue` gives direct-model gross margin. The trial is a one-time controlled acquisition cost, not a recurring free tier.
 
 ## Evidence Collected
 
@@ -43,7 +53,7 @@ The $0.06 pack calculation is exact **only** when Hokvibe submits six completed 
 
 ### Definition
 
-One **generation pack** equals one explicit customer request that produces up to six text drafts from a single source input. Editing, copying, viewing history, connecting an account, and publishing should not consume a generation pack.
+One **generation pack** equals one explicit customer request that transforms one source URL or raw note into up to six platform-native text drafts. Editing, copying, viewing history, connecting an account, and publishing should not consume a generation pack.
 
 Charge only once a MuAPI request completes. Use one internal request key per pack so an accidental browser retry cannot create multiple paid jobs. A failed or unknown provider state should never be automatically retried; it needs a visible customer action.
 
@@ -51,17 +61,18 @@ Charge only once a MuAPI request completes. Use one internal request key per pac
 
 | Plan | Protection | Why it exists |
 | --- | --- | --- |
-| Free | 10 packs/month; no rollover; one active generation at a time; standard text model only | Caps the direct API exposure at $0.60 per active account per month |
-| Solo | 150 packs/month; no rollover; two active generations at a time; standard text model only | Supports regular distribution without allowing unbounded automated bulk generation |
-| Scale | 500 packs/month; no rollover; five active generations at a time; standard text model only | Supports multiple brands while retaining a direct-model margin buffer |
+| Free Trial | 5 packs total; no reset or rollover; one active generation at a time; standard text model only | Caps acquisition cost at $0.30 for each trial account |
+| Solo Founder | 50 packs/month; no rollover; two active generations at a time; standard text model only | Fits a steady founder update cadence while preserving strong unit economics |
+| Builder | 150 packs/month; no rollover; three active generations at a time; standard text model only | Supports frequent shipping and distribution without unlimited automated bulk generation |
 
 Apply a server-side monthly allowance, a per-user concurrency limit, input-length and output-token caps, and request idempotency. Never use the client's reported plan, price, customer ID, or generation count as the authorization source.
 
 ### Add-ons And Exclusions
 
-- Image, video, music, upscaling, and other media models are excluded from the three text plans.
+- Image, video, music, upscaling, and other media models are excluded from the trial and paid text plans.
 - Add those later as separately priced credit packs based on the specific MuAPI model price plus a margin buffer. For example, a $0.15 image model cannot be safely treated as a $0.01 text draft.
 - Publishing is not a model-cost unit. Keep it separate from generation allowances and do not use it to justify plan usage without measuring provider cost and support burden.
+- A Scale tier is explicitly postponed until production usage patterns and advanced automation features are verified.
 
 ## MuAPI Production Setup Checklist
 
